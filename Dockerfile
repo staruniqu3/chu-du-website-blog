@@ -1,6 +1,6 @@
 FROM node:24-slim AS builder
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10 --activate
 
 WORKDIR /app
 
@@ -15,6 +15,7 @@ COPY lib/api-zod/package.json ./lib/api-zod/
 COPY lib/db/package.json ./lib/db/
 
 # Install all dependencies — skip frozen-lockfile since platform overrides differ
+# pnpm-workspace.yaml onlyBuiltDependencies allows esbuild/swc to run their postinstall scripts
 RUN pnpm install --no-frozen-lockfile
 
 # Copy all source
