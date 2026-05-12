@@ -1,6 +1,6 @@
-# [Project name]
+# Tiệm Chu Du
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A Vietnamese lifestyle blog and order management website with an elegant teal-paper aesthetic, admin panel for content management.
 
 ## Run & Operate
 
@@ -22,23 +22,37 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- API spec: `lib/api-spec/openapi.yaml`
+- DB schema: `lib/db/src/schema/` — blogs.ts, orderRules.ts, welcomePage.ts
+- API routes: `artifacts/api-server/src/routes/` — blogs.ts, orderRules.ts, welcome.ts
+- Frontend pages: `artifacts/tiem-chu-du/src/pages/`
+- Theme/CSS: `artifacts/tiem-chu-du/src/index.css`
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Contract-first: OpenAPI spec drives both Zod validation (server) and React Query hooks (client)
+- Admin panel at `/admin` — tab-based, no password required (simple owner tool)
+- Welcome page stored as a single database row, updated via PATCH
+- Blog posts support published/draft toggle
+- Order rules support sort order for custom ordering
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Public: Welcome page, blog listing + detail, order rules page
+- Admin: Edit welcome page, write/manage blog posts, manage order rules
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Website name: Tiệm Chu Du
+- Design: Luxurious teal/dark blue-green paper aesthetic, gold accents, Cormorant Garamond + Lora fonts
+- Language: Vietnamese UI
+- Admin panel: tab-based, no authentication needed
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- After changing OpenAPI spec, always run codegen before using updated types
+- Welcome page always has exactly one row — seeded on first setup
+- `pnpm --filter @workspace/db run push` must be run after any schema changes
 
 ## Pointers
 
