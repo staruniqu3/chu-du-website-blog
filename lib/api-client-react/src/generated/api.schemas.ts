@@ -79,6 +79,100 @@ export interface WelcomePageUpdate {
   body?: string;
 }
 
+export interface Feature {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+  enabled: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface FeatureInput {
+  /** @minLength 1 */
+  title: string;
+  description: string;
+  icon: string;
+  enabled?: boolean;
+  sortOrder?: number;
+}
+
+export interface FeatureUpdate {
+  title?: string;
+  description?: string;
+  icon?: string;
+  enabled?: boolean;
+  sortOrder?: number;
+}
+
+export interface PortfolioItem {
+  id: number;
+  title: string;
+  description: string;
+  /** @nullable */
+  coverImage?: string | null;
+  /** @nullable */
+  link?: string | null;
+  tags?: string;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PortfolioItemInput {
+  /** @minLength 1 */
+  title: string;
+  description: string;
+  coverImage?: string;
+  link?: string;
+  tags?: string;
+  sortOrder?: number;
+}
+
+export interface PortfolioItemUpdate {
+  title?: string;
+  description?: string;
+  coverImage?: string;
+  link?: string;
+  tags?: string;
+  sortOrder?: number;
+}
+
+export interface AdminAuthStatus {
+  hasPassword: boolean;
+}
+
+export interface AdminPasswordSetup {
+  /** @minLength 4 */
+  password: string;
+}
+
+export interface AdminLogin {
+  password: string;
+}
+
+export interface AdminChangePassword {
+  currentPassword: string;
+  /** @minLength 4 */
+  newPassword: string;
+}
+
+export interface AdminAuthResult {
+  success: boolean;
+}
+
+export interface ContactSettings {
+  id: number;
+  email: string;
+  updatedAt: string;
+}
+
+export interface ContactSettingsUpdate {
+  email?: string;
+}
+
 export type ListBlogsParams = {
   limit?: number;
   offset?: number;

@@ -15,6 +15,12 @@ tags:
     description: Order rules and regulations
   - name: welcome
     description: Welcome page content
+  - name: features
+    description: Shop features/services
+  - name: portfolio
+    description: Portfolio projects
+  - name: admin
+    description: Admin authentication
 paths:
   /healthz:
     get:
@@ -248,6 +254,252 @@ paths:
               schema:
                 $ref: "#/components/schemas/WelcomePage"
 
+  /features:
+    get:
+      operationId: listFeatures
+      tags: [features]
+      summary: List all shop features
+      responses:
+        "200":
+          description: List of features
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Feature"
+    post:
+      operationId: createFeature
+      tags: [features]
+      summary: Create a new feature
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeatureInput"
+      responses:
+        "201":
+          description: Created feature
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Feature"
+
+  /features/{id}:
+    patch:
+      operationId: updateFeature
+      tags: [features]
+      summary: Update a feature
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeatureUpdate"
+      responses:
+        "200":
+          description: Updated feature
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Feature"
+    delete:
+      operationId: deleteFeature
+      tags: [features]
+      summary: Delete a feature
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /portfolio:
+    get:
+      operationId: listPortfolio
+      tags: [portfolio]
+      summary: List all portfolio items
+      responses:
+        "200":
+          description: List of portfolio items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PortfolioItem"
+    post:
+      operationId: createPortfolioItem
+      tags: [portfolio]
+      summary: Create a new portfolio item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PortfolioItemInput"
+      responses:
+        "201":
+          description: Created portfolio item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioItem"
+
+  /portfolio/{id}:
+    patch:
+      operationId: updatePortfolioItem
+      tags: [portfolio]
+      summary: Update a portfolio item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PortfolioItemUpdate"
+      responses:
+        "200":
+          description: Updated portfolio item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioItem"
+    delete:
+      operationId: deletePortfolioItem
+      tags: [portfolio]
+      summary: Delete a portfolio item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /admin/auth/status:
+    get:
+      operationId: getAdminAuthStatus
+      tags: [admin]
+      summary: Check if admin password is set up
+      responses:
+        "200":
+          description: Auth status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminAuthStatus"
+
+  /admin/auth/setup:
+    post:
+      operationId: setupAdminPassword
+      tags: [admin]
+      summary: Set up admin password for the first time
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminPasswordSetup"
+      responses:
+        "200":
+          description: Password set up
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminAuthResult"
+        "409":
+          description: Password already set up
+
+  /admin/auth/login:
+    post:
+      operationId: loginAdmin
+      tags: [admin]
+      summary: Verify admin password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLogin"
+      responses:
+        "200":
+          description: Login success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminAuthResult"
+        "401":
+          description: Wrong password
+
+  /admin/auth/change-password:
+    post:
+      operationId: changeAdminPassword
+      tags: [admin]
+      summary: Change admin password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminChangePassword"
+      responses:
+        "200":
+          description: Password changed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminAuthResult"
+        "401":
+          description: Wrong current password
+
+  /settings/contact:
+    get:
+      operationId: getContactSettings
+      tags: [welcome]
+      summary: Get contact settings
+      responses:
+        "200":
+          description: Contact settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactSettings"
+    patch:
+      operationId: updateContactSettings
+      tags: [welcome]
+      summary: Update contact settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactSettingsUpdate"
+      responses:
+        "200":
+          description: Updated contact settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactSettings"
+
 components:
   schemas:
     HealthStatus:
@@ -382,4 +634,178 @@ components:
         subheadline:
           type: string
         body:
+          type: string
+
+    Feature:
+      type: object
+      required: [id, title, description, icon, enabled, sortOrder, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        enabled:
+          type: boolean
+        sortOrder:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    FeatureInput:
+      type: object
+      required: [title, description, icon]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        icon:
+          type: string
+          default: "star"
+        enabled:
+          type: boolean
+          default: true
+        sortOrder:
+          type: integer
+          default: 0
+
+    FeatureUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        enabled:
+          type: boolean
+        sortOrder:
+          type: integer
+
+    PortfolioItem:
+      type: object
+      required: [id, title, description, sortOrder, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        coverImage:
+          type: ["string", "null"]
+        link:
+          type: ["string", "null"]
+        tags:
+          type: string
+        sortOrder:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    PortfolioItemInput:
+      type: object
+      required: [title, description]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        coverImage:
+          type: string
+        link:
+          type: string
+        tags:
+          type: string
+          default: ""
+        sortOrder:
+          type: integer
+          default: 0
+
+    PortfolioItemUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        coverImage:
+          type: string
+        link:
+          type: string
+        tags:
+          type: string
+        sortOrder:
+          type: integer
+
+    AdminAuthStatus:
+      type: object
+      required: [hasPassword]
+      properties:
+        hasPassword:
+          type: boolean
+
+    AdminPasswordSetup:
+      type: object
+      required: [password]
+      properties:
+        password:
+          type: string
+          minLength: 4
+
+    AdminLogin:
+      type: object
+      required: [password]
+      properties:
+        password:
+          type: string
+
+    AdminChangePassword:
+      type: object
+      required: [currentPassword, newPassword]
+      properties:
+        currentPassword:
+          type: string
+        newPassword:
+          type: string
+          minLength: 4
+
+    AdminAuthResult:
+      type: object
+      required: [success]
+      properties:
+        success:
+          type: boolean
+
+    ContactSettings:
+      type: object
+      required: [id, email, updatedAt]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+
+    ContactSettingsUpdate:
+      type: object
+      properties:
+        email:
           type: string

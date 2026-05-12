@@ -9,21 +9,32 @@ import BlogListing from "@/pages/BlogListing";
 import BlogDetail from "@/pages/BlogDetail";
 import OrderRules from "@/pages/OrderRules";
 import Admin from "@/pages/Admin";
+import Portfolio from "@/pages/Portfolio";
+import { AdminAuthProvider } from "@/components/AdminAuth";
 
 const queryClient = new QueryClient();
 
 function Router() {
   return (
-    <Layout>
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/blog" component={BlogListing} />
-        <Route path="/blog/:id" component={BlogDetail} />
-        <Route path="/order-rules" component={OrderRules} />
-        <Route path="/admin" component={Admin} />
-        <Route component={NotFound} />
-      </Switch>
-    </Layout>
+    <Switch>
+      <Route path="/admin">
+        <AdminAuthProvider>
+          <Admin />
+        </AdminAuthProvider>
+      </Route>
+      <Route>
+        <Layout>
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/blog" component={BlogListing} />
+            <Route path="/blog/:id" component={BlogDetail} />
+            <Route path="/order-rules" component={OrderRules} />
+            <Route path="/portfolio" component={Portfolio} />
+            <Route component={NotFound} />
+          </Switch>
+        </Layout>
+      </Route>
+    </Switch>
   );
 }
 

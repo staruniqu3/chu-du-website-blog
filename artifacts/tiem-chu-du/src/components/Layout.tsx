@@ -1,19 +1,22 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
+import { useGetContactSettings } from "@workspace/api-client-react";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
+  const { data: contact } = useGetContactSettings();
 
   const navItems = [
     { href: "/", label: "Trang chủ" },
     { href: "/blog", label: "Blog" },
+    { href: "/portfolio", label: "Portfolio" },
     { href: "/order-rules", label: "Quy định Order" },
   ];
 
   return (
     <div className="min-h-[100dvh] flex flex-col selection:bg-primary/25">
-      {/* Ambient glow blobs — echoes the galaxy/space motif from the banner */}
+      {/* Ambient glow blobs */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full bg-blue-700/10 blur-[120px]" />
         <div className="absolute top-1/3 -right-40 w-[500px] h-[500px] rounded-full bg-pink-600/10 blur-[100px]" />
@@ -24,14 +27,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <div className="fixed inset-0 pointer-events-none opacity-[0.025] z-10 mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
       <header className="sticky top-0 z-40 w-full border-b border-white/8 bg-background/85 backdrop-blur-md">
-        <div className="container mx-auto px-4 md:px-8 h-18 flex items-center justify-between" style={{ height: "4.5rem" }}>
-          <Link href="/" className="flex items-center gap-3 group">
-            <span className="text-2xl font-serif text-primary hover:opacity-85 transition-opacity tracking-wide">
-              Tiệm Chu Du
-            </span>
+        <div className="container mx-auto px-4 md:px-8 flex items-center justify-between" style={{ height: "4.5rem" }}>
+          <Link href="/" className="text-2xl font-serif text-primary hover:opacity-85 transition-opacity tracking-wide">
+            Tiệm Chu Du
           </Link>
 
-          <nav className="flex items-center gap-7">
+          <nav className="flex items-center gap-6">
             {navItems.map((item) => {
               const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
               return (
@@ -60,15 +61,34 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       <footer className="relative z-10 border-t border-white/8 py-14 mt-20">
-        <div className="container mx-auto px-4 text-center">
-          <p className="font-serif text-2xl text-primary mb-3 tracking-wide">Tiệm Chu Du</p>
-          <p className="text-white/40 text-sm tracking-wide">
-            Nơi lưu giữ những câu chuyện và món đồ nhỏ bé.
-          </p>
-          <div className="mt-8 flex justify-center gap-6 text-xs text-white/30">
-            <Link href="/admin" className="hover:text-primary transition-colors tracking-widest uppercase">
-              Admin
-            </Link>
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
+            <div className="text-center md:text-left">
+              <p className="font-serif text-2xl text-primary mb-2 tracking-wide">Tiệm Chu Du</p>
+              <p className="text-white/40 text-sm tracking-wide">
+                Nơi lưu giữ những câu chuyện và món đồ nhỏ bé.
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center md:items-end gap-3">
+              {contact?.email && (
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="text-sm text-white/50 hover:text-primary transition-colors tracking-wide flex items-center gap-2"
+                >
+                  <span className="text-primary/60">✉</span>
+                  {contact.email}
+                </a>
+              )}
+              <div className="flex items-center gap-5 text-xs text-white/25">
+                <Link href="/portfolio" className="hover:text-white/50 transition-colors tracking-wide">
+                  Portfolio
+                </Link>
+                <Link href="/order-rules" className="hover:text-white/50 transition-colors tracking-wide">
+                  Quy định
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </footer>

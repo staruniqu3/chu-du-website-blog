@@ -1,31 +1,35 @@
 import React from "react";
-import { useGetWelcome } from "@workspace/api-client-react";
+import { useGetWelcome, useListFeatures } from "@workspace/api-client-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Markdown } from "@/components/Markdown";
 import { Link } from "wouter";
 
+const ICON_MAP: Record<string, string> = {
+  smartphone: "📱",
+  globe: "🌐",
+  star: "⭐",
+  cart: "🛒",
+  package: "📦",
+  heart: "💗",
+  chat: "💬",
+  camera: "📷",
+  music: "🎵",
+  ticket: "🎟",
+  gift: "🎁",
+  map: "📍",
+};
+
 export default function Home() {
-  const { data: welcome, isLoading } = useGetWelcome();
+  const { data: welcome, isLoading: welcomeLoading } = useGetWelcome();
+  const { data: features, isLoading: featuresLoading } = useListFeatures();
+
+  const enabledFeatures = features?.filter((f) => f.enabled) ?? [];
 
   return (
     <div className="flex flex-col">
-      {/* Hero banner */}
-      <section className="relative w-full overflow-hidden">
-        <div className="relative w-full" style={{ aspectRatio: "940/352", maxHeight: "420px" }}>
-          <img
-            src="/banner.jpg"
-            alt="Tiệm Chu Du Banner"
-            className="w-full h-full object-cover object-center"
-          />
-          {/* Gradient fade into page background at bottom */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/30 via-transparent to-transparent" />
-        </div>
-      </section>
-
       {/* Welcome content */}
       <section className="container mx-auto px-4 py-16 md:py-24 max-w-3xl flex flex-col items-center text-center">
-        {isLoading ? (
+        {welcomeLoading ? (
           <div className="w-full space-y-6 animate-pulse">
             <Skeleton className="h-12 w-2/3 mx-auto" />
             <Skeleton className="h-6 w-1/2 mx-auto" />
@@ -75,6 +79,67 @@ export default function Home() {
             </div>
           </>
         )}
+      </section>
+
+      {/* Tiệm Chu Du có gì */}
+      {(featuresLoading || enabledFeatures.length > 0) && (
+        <section className="w-full border-t border-white/8 py-20 md:py-28">
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-serif text-primary mb-4">
+                Tiệm Chu Du có gì?
+              </h2>
+              <div className="flex items-center gap-3 justify-center">
+                <div className="w-10 h-[1px] bg-primary/25" />
+                <div className="w-1.5 h-1.5 rounded-full bg-primary/35" />
+                <div className="w-10 h-[1px] bg-primary/25" />
+              </div>
+            </div>
+
+            {featuresLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[1, 2, 3].map((i) => (
+                  <Skeleton key={i} className="h-40 w-full" />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {enabledFeatures.map((feature) => (
+                  <div
+                    key={feature.id}
+                    className="group relative border border-white/8 bg-white/3 hover:border-primary/30 hover:bg-white/5 transition-all duration-400 p-7 flex flex-col gap-4"
+                  >
+                    <div className="text-3xl leading-none">
+                      {ICON_MAP[feature.icon] ?? ICON_MAP["star"]}
+                    </div>
+                    <h3 className="font-serif text-xl text-primary group-hover:text-primary/90 transition-colors">
+                      {feature.title}
+                    </h3>
+                    <p className="text-white/60 text-sm leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* Portfolio teaser */}
+      <section className="w-full border-t border-white/8 py-16">
+        <div className="container mx-auto px-4 max-w-5xl text-center">
+          <p className="text-white/40 text-sm tracking-widest uppercase mb-4">Dự án</p>
+          <h2 className="text-2xl md:text-3xl font-serif text-primary mb-6">
+            Các dự án Tiệm đã support
+          </h2>
+          <Link
+            href="/portfolio"
+            className="inline-block px-8 py-3 border border-white/15 text-white/70 hover:border-primary/50 hover:text-primary transition-all duration-300 font-serif text-sm tracking-widest uppercase"
+          >
+            Xem Portfolio
+          </Link>
+        </div>
       </section>
     </div>
   );

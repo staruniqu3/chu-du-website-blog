@@ -6,13 +6,26 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./adminAuthResult";
+export * from "./adminAuthStatus";
+export * from "./adminChangePassword";
+export * from "./adminLogin";
+export * from "./adminPasswordSetup";
 export * from "./blog";
 export * from "./blogInput";
 export * from "./blogUpdate";
+export * from "./contactSettings";
+export * from "./contactSettingsUpdate";
+export * from "./feature";
+export * from "./featureInput";
+export * from "./featureUpdate";
 export * from "./healthStatus";
 export * from "./listBlogsParams";
 export * from "./orderRule";
 export * from "./orderRuleInput";
 export * from "./orderRuleUpdate";
+export * from "./portfolioItem";
+export * from "./portfolioItemInput";
+export * from "./portfolioItemUpdate";
 export * from "./welcomePage";
 export * from "./welcomePageUpdate";

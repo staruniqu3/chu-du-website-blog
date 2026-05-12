@@ -199,3 +199,201 @@ export const UpdateWelcomeResponse = zod.object({
   body: zod.string(),
   updatedAt: zod.coerce.date(),
 });
+
+/**
+ * @summary List all shop features
+ */
+export const ListFeaturesResponseItem = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  description: zod.string(),
+  icon: zod.string(),
+  enabled: zod.boolean(),
+  sortOrder: zod.number(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+export const ListFeaturesResponse = zod.array(ListFeaturesResponseItem);
+
+/**
+ * @summary Create a new feature
+ */
+
+export const createFeatureBodyIconDefault = `star`;
+export const createFeatureBodyEnabledDefault = true;
+export const createFeatureBodySortOrderDefault = 0;
+
+export const CreateFeatureBody = zod.object({
+  title: zod.string().min(1),
+  description: zod.string(),
+  icon: zod.string().default(createFeatureBodyIconDefault),
+  enabled: zod.boolean().default(createFeatureBodyEnabledDefault),
+  sortOrder: zod.number().default(createFeatureBodySortOrderDefault),
+});
+
+/**
+ * @summary Update a feature
+ */
+export const UpdateFeatureParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateFeatureBody = zod.object({
+  title: zod.string().optional(),
+  description: zod.string().optional(),
+  icon: zod.string().optional(),
+  enabled: zod.boolean().optional(),
+  sortOrder: zod.number().optional(),
+});
+
+export const UpdateFeatureResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  description: zod.string(),
+  icon: zod.string(),
+  enabled: zod.boolean(),
+  sortOrder: zod.number(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Delete a feature
+ */
+export const DeleteFeatureParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List all portfolio items
+ */
+export const ListPortfolioResponseItem = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  description: zod.string(),
+  coverImage: zod.string().nullish(),
+  link: zod.string().nullish(),
+  tags: zod.string().optional(),
+  sortOrder: zod.number(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+export const ListPortfolioResponse = zod.array(ListPortfolioResponseItem);
+
+/**
+ * @summary Create a new portfolio item
+ */
+
+export const createPortfolioItemBodyTagsDefault = ``;
+export const createPortfolioItemBodySortOrderDefault = 0;
+
+export const CreatePortfolioItemBody = zod.object({
+  title: zod.string().min(1),
+  description: zod.string(),
+  coverImage: zod.string().optional(),
+  link: zod.string().optional(),
+  tags: zod.string().default(createPortfolioItemBodyTagsDefault),
+  sortOrder: zod.number().default(createPortfolioItemBodySortOrderDefault),
+});
+
+/**
+ * @summary Update a portfolio item
+ */
+export const UpdatePortfolioItemParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdatePortfolioItemBody = zod.object({
+  title: zod.string().optional(),
+  description: zod.string().optional(),
+  coverImage: zod.string().optional(),
+  link: zod.string().optional(),
+  tags: zod.string().optional(),
+  sortOrder: zod.number().optional(),
+});
+
+export const UpdatePortfolioItemResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  description: zod.string(),
+  coverImage: zod.string().nullish(),
+  link: zod.string().nullish(),
+  tags: zod.string().optional(),
+  sortOrder: zod.number(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Delete a portfolio item
+ */
+export const DeletePortfolioItemParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary Check if admin password is set up
+ */
+export const GetAdminAuthStatusResponse = zod.object({
+  hasPassword: zod.boolean(),
+});
+
+/**
+ * @summary Set up admin password for the first time
+ */
+export const setupAdminPasswordBodyPasswordMin = 4;
+
+export const SetupAdminPasswordBody = zod.object({
+  password: zod.string().min(setupAdminPasswordBodyPasswordMin),
+});
+
+export const SetupAdminPasswordResponse = zod.object({
+  success: zod.boolean(),
+});
+
+/**
+ * @summary Verify admin password
+ */
+export const LoginAdminBody = zod.object({
+  password: zod.string(),
+});
+
+export const LoginAdminResponse = zod.object({
+  success: zod.boolean(),
+});
+
+/**
+ * @summary Change admin password
+ */
+export const changeAdminPasswordBodyNewPasswordMin = 4;
+
+export const ChangeAdminPasswordBody = zod.object({
+  currentPassword: zod.string(),
+  newPassword: zod.string().min(changeAdminPasswordBodyNewPasswordMin),
+});
+
+export const ChangeAdminPasswordResponse = zod.object({
+  success: zod.boolean(),
+});
+
+/**
+ * @summary Get contact settings
+ */
+export const GetContactSettingsResponse = zod.object({
+  id: zod.number(),
+  email: zod.string(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Update contact settings
+ */
+export const UpdateContactSettingsBody = zod.object({
+  email: zod.string().optional(),
+});
+
+export const UpdateContactSettingsResponse = zod.object({
+  id: zod.number(),
+  email: zod.string(),
+  updatedAt: zod.coerce.date(),
+});
