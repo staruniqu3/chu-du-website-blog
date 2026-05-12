@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAdminAuth } from "@/components/AdminAuth";
+import { RichTextArea } from "@/components/RichTextArea";
 
 type AdminTab = "welcome" | "blog" | "order-rules" | "features" | "portfolio" | "settings";
 
@@ -317,8 +318,8 @@ function BlogTab() {
         <Field label="Tóm tắt">
           <input type="text" value={excerpt} onChange={(e) => setExcerpt(e.target.value)} placeholder="Một câu mô tả ngắn..." className={inputCls} />
         </Field>
-        <Field label="Nội dung" hint="Hỗ trợ Markdown cơ bản.">
-          <textarea value={content} onChange={(e) => setContent(e.target.value)} rows={16} placeholder="Viết nội dung bài..." className={inputCls + " resize-y leading-relaxed"} />
+        <Field label="Nội dung" hint="Dùng toolbar để định dạng. Ctrl+B đậm, Ctrl+I nghiêng.">
+          <RichTextArea value={content} onChange={setContent} rows={16} placeholder="Viết nội dung bài..." />
         </Field>
         <div className="flex items-center gap-3">
           <Toggle checked={published} onChange={setPublished} />
