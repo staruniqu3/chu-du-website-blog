@@ -1,0 +1,9 @@
+**/.git
+**/.gitignore
+**/node_modules
+**/.env
+**/*.log
+**/dist
+**/.local
+attached_assets
+nixpacks.toml
