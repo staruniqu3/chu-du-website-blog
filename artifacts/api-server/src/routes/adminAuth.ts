@@ -59,4 +59,21 @@ router.post("/admin/auth/change-password", async (req, res) => {
   return res.json({ success: true });
 });
 
+// Reset password using ADMIN_RESET_TOKEN env var (set in Railway Variables to enable)
+router.post("/admin/auth/reset", async (req, res) => {
+  const resetToken = process.env.ADMIN_RESET_TOKEN;
+  if (!resetToken) {
+    return res.status(403).json({ error: "Reset not enabled. Set ADMIN_RESET_TOKEN env var to enable." });
+  }
+  const { token } = req.body as { token?: string };
+  if (!token || token !== resetToken) {
+    return res.status(401).json({ error: "Invalid reset token." });
+  }
+  const settings = await getSettings();
+  if (settings) {
+    await db.update(appSettingsTable).set({ adminPasswordHash: null, updatedAt: new Date() }).where(eq(appSettingsTable.id, settings.id));
+  }
+  return res.json({ success: true });
+});
+
 export default router;
