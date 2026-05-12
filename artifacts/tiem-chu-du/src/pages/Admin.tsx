@@ -251,20 +251,24 @@ function BlogTab() {
   const [content, setContent] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [published, setPublished] = useState(false);
+  const [category, setCategory] = useState<"blog" | "sovereign">("blog");
+  const [filterCat, setFilterCat] = useState<"all" | "blog" | "sovereign">("all");
 
-  const reset = () => { setTitle(""); setContent(""); setExcerpt(""); setPublished(false); setEditId(null); };
+  const reset = () => { setTitle(""); setContent(""); setExcerpt(""); setPublished(false); setCategory("blog"); setEditId(null); };
 
   const handleEdit = (b: NonNullable<typeof blogs>[number]) => {
-    setTitle(b.title); setContent(b.content); setExcerpt(b.excerpt ?? ""); setPublished(b.published); setEditId(b.id); setView("edit");
+    setTitle(b.title); setContent(b.content); setExcerpt(b.excerpt ?? ""); setPublished(b.published);
+    setCategory((b.category as "blog" | "sovereign") ?? "blog");
+    setEditId(b.id); setView("edit");
   };
 
   const handleSave = () => {
     if (view === "new") {
-      createBlog.mutate({ data: { title, content, excerpt, published } }, {
+      createBlog.mutate({ data: { title, content, excerpt, published, category } }, {
         onSuccess: () => { queryClient.invalidateQueries({ queryKey: getListBlogsQueryKey() }); reset(); setView("list"); },
       });
     } else if (editId !== null) {
-      updateBlog.mutate({ id: editId, data: { title, content, excerpt, published } }, {
+      updateBlog.mutate({ id: editId, data: { title, content, excerpt, published, category } }, {
         onSuccess: () => { queryClient.invalidateQueries({ queryKey: getListBlogsQueryKey() }); reset(); setView("list"); },
       });
     }
@@ -281,10 +285,32 @@ function BlogTab() {
     });
   };
 
+  const filtered = filterCat === "all" ? (blogs ?? []) : (blogs ?? []).filter((b) => b.category === filterCat);
+
   if (view === "new" || view === "edit") {
     return (
       <div className="space-y-7">
         <BackRow onBack={() => { reset(); setView("list"); }} title={view === "new" ? "Bài viết mới" : "Chỉnh sửa bài viết"} />
+        <Field label="Danh mục">
+          <div className="flex gap-3">
+            {([["blog", "Blog thường"], ["sovereign", "Sovereign Club"]] as const).map(([val, label]) => (
+              <button
+                key={val}
+                type="button"
+                onClick={() => setCategory(val)}
+                className={cn(
+                  "flex-1 py-2.5 rounded-lg text-sm font-medium border transition-colors duration-150",
+                  category === val
+                    ? "border-primary bg-primary/15 text-primary"
+                    : "border-white/10 bg-white/5 text-white/45 hover:text-white/75"
+                )}
+              >
+                {val === "sovereign" && <span className="mr-1.5">👑</span>}
+                {label}
+              </button>
+            ))}
+          </div>
+        </Field>
         <Field label="Tiêu đề">
           <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Tiêu đề bài viết..." className={inputCls + " font-serif text-lg"} />
         </Field>
@@ -309,16 +335,41 @@ function BlogTab() {
 
   return (
     <div className="space-y-7">
-      <ListHeader label="Quản lý tất cả bài viết." onAdd={() => { reset(); setView("new"); }} addLabel="+ Bài viết mới" />
-      {isLoading ? <SkeletonList /> : !blogs?.length ? <Empty label="Chưa có bài viết nào." /> : (
+      <ListHeader label="Quản lý tất cả bài viết blog và Sovereign Club." onAdd={() => { reset(); setView("new"); }} addLabel="+ Bài viết mới" />
+
+      {/* Filter tabs */}
+      <div className="flex gap-1.5">
+        {([["all", "Tất cả"], ["blog", "Blog"], ["sovereign", "Sovereign Club"]] as const).map(([val, label]) => (
+          <button
+            key={val}
+            onClick={() => setFilterCat(val)}
+            className={cn(
+              "px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors duration-150",
+              filterCat === val ? "bg-primary text-background" : "bg-white/8 text-white/45 hover:bg-white/12 hover:text-white/70"
+            )}
+          >
+            {val === "sovereign" && "👑 "}{label}
+            <span className="ml-1.5 opacity-60">
+              {val === "all" ? (blogs?.length ?? 0) : (blogs?.filter(b => b.category === val).length ?? 0)}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {isLoading ? <SkeletonList /> : !filtered.length ? <Empty label="Chưa có bài viết nào trong mục này." /> : (
         <div className="divide-y divide-white/6">
-          {blogs.map((b) => (
+          {filtered.map((b) => (
             <div key={b.id} className="py-4 flex items-start justify-between gap-4 group">
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
                   <span className={cn("text-xs px-2 py-0.5 rounded-full", b.published ? "bg-primary/15 text-primary" : "bg-white/8 text-white/35")}>
                     {b.published ? "Đã xuất bản" : "Nháp"}
                   </span>
+                  {b.category === "sovereign" && (
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-500/20">
+                      👑 Sovereign
+                    </span>
+                  )}
                   <time className="text-xs text-white/30">{format(new Date(b.createdAt), "dd/MM/yyyy")}</time>
                 </div>
                 <p className="font-serif text-base text-white/85 group-hover:text-primary transition-colors truncate">{b.title}</p>

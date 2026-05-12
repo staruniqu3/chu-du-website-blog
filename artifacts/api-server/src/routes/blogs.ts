@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
 import { blogsTable } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import {
   ListBlogsQueryParams,
   CreateBlogBody,
@@ -18,15 +18,18 @@ router.get("/blogs", async (req, res) => {
   if (!query.success) {
     return res.status(400).json({ error: "Invalid query params" });
   }
-  const { limit = 20, offset = 0, published } = query.data;
+  const { limit = 20, offset = 0, published, category } = query.data;
   const conditions = [];
   if (published !== undefined) {
     conditions.push(eq(blogsTable.published, published));
   }
+  if (category !== undefined) {
+    conditions.push(eq(blogsTable.category, category));
+  }
   const blogs = await db
     .select()
     .from(blogsTable)
-    .where(conditions.length ? conditions[0] : undefined)
+    .where(conditions.length > 1 ? and(...conditions) : conditions[0])
     .orderBy(desc(blogsTable.createdAt))
     .limit(limit)
     .offset(offset);
@@ -37,7 +40,7 @@ router.get("/blogs/recent", async (_req, res) => {
   const blogs = await db
     .select()
     .from(blogsTable)
-    .where(eq(blogsTable.published, true))
+    .where(and(eq(blogsTable.published, true), eq(blogsTable.category, "blog")))
     .orderBy(desc(blogsTable.createdAt))
     .limit(5);
   return res.json(blogs);
@@ -71,6 +74,7 @@ router.post("/blogs", async (req, res) => {
       excerpt: body.data.excerpt,
       coverImage: body.data.coverImage,
       published: body.data.published ?? false,
+      category: body.data.category ?? "blog",
     })
     .returning();
   return res.status(201).json(blog);
@@ -91,6 +95,7 @@ router.patch("/blogs/:id", async (req, res) => {
   if (body.data.excerpt !== undefined) updateData.excerpt = body.data.excerpt;
   if (body.data.coverImage !== undefined) updateData.coverImage = body.data.coverImage;
   if (body.data.published !== undefined) updateData.published = body.data.published;
+  if (body.data.category !== undefined) updateData.category = body.data.category;
 
   const [blog] = await db
     .update(blogsTable)

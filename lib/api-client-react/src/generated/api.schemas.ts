@@ -18,6 +18,7 @@ export interface Blog {
   /** @nullable */
   coverImage?: string | null;
   published: boolean;
+  category: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -30,6 +31,7 @@ export interface BlogInput {
   excerpt?: string;
   coverImage?: string;
   published?: boolean;
+  category?: string;
 }
 
 export interface BlogUpdate {
@@ -39,6 +41,7 @@ export interface BlogUpdate {
   excerpt?: string;
   coverImage?: string;
   published?: boolean;
+  category?: string;
 }
 
 export interface OrderRule {
@@ -177,4 +180,5 @@ export type ListBlogsParams = {
   limit?: number;
   offset?: number;
   published?: boolean;
+  category?: string;
 };

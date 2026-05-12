@@ -15,6 +15,7 @@ export interface Blog {
   /** @nullable */
   coverImage?: string | null;
   published: boolean;
+  category: string;
   createdAt: Date;
   updatedAt: Date;
 }

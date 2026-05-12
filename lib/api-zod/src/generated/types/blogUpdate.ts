@@ -13,4 +13,5 @@ export interface BlogUpdate {
   excerpt?: string;
   coverImage?: string;
   published?: boolean;
+  category?: string;
 }

@@ -14,4 +14,5 @@ export interface BlogInput {
   excerpt?: string;
   coverImage?: string;
   published?: boolean;
+  category?: string;
 }

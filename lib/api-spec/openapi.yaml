@@ -55,6 +55,10 @@ paths:
           in: query
           schema:
             type: boolean
+        - name: category
+          in: query
+          schema:
+            type: string
       responses:
         "200":
           description: List of blog posts
@@ -512,7 +516,7 @@ components:
 
     Blog:
       type: object
-      required: [id, title, content, published, createdAt, updatedAt]
+      required: [id, title, content, published, category, createdAt, updatedAt]
       properties:
         id:
           type: integer
@@ -526,6 +530,9 @@ components:
           type: ["string", "null"]
         published:
           type: boolean
+        category:
+          type: string
+          default: "blog"
         createdAt:
           type: string
           format: date-time
@@ -550,6 +557,9 @@ components:
         published:
           type: boolean
           default: false
+        category:
+          type: string
+          default: "blog"
 
     BlogUpdate:
       type: object
@@ -565,6 +575,8 @@ components:
           type: string
         published:
           type: boolean
+        category:
+          type: string
 
     OrderRule:
       type: object

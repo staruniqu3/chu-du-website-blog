@@ -10,6 +10,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const navItems = [
     { href: "/", label: "Trang chủ" },
     { href: "/blog", label: "Blog" },
+    { href: "/sovereign-club", label: "Sovereign Club" },
     { href: "/portfolio", label: "Portfolio" },
     { href: "/order-rules", label: "Quy định Order" },
   ];

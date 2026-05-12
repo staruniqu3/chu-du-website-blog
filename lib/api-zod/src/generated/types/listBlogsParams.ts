@@ -10,4 +10,5 @@ export type ListBlogsParams = {
   limit?: number;
   offset?: number;
   published?: boolean;
+  category?: string;
 };

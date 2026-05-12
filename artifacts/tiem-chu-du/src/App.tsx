@@ -10,6 +10,7 @@ import BlogDetail from "@/pages/BlogDetail";
 import OrderRules from "@/pages/OrderRules";
 import Admin from "@/pages/Admin";
 import Portfolio from "@/pages/Portfolio";
+import SovereignClub from "@/pages/SovereignClub";
 import { AdminAuthProvider } from "@/components/AdminAuth";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ function Router() {
             <Route path="/blog/:id" component={BlogDetail} />
             <Route path="/order-rules" component={OrderRules} />
             <Route path="/portfolio" component={Portfolio} />
+            <Route path="/sovereign-club" component={SovereignClub} />
             <Route component={NotFound} />
           </Switch>
         </Layout>

@@ -24,7 +24,10 @@ export const ListBlogsQueryParams = zod.object({
   limit: zod.coerce.number().default(listBlogsQueryLimitDefault),
   offset: zod.coerce.number().default(listBlogsQueryOffsetDefault),
   published: zod.coerce.boolean().optional(),
+  category: zod.coerce.string().optional(),
 });
+
+export const listBlogsResponseCategoryDefault = `blog`;
 
 export const ListBlogsResponseItem = zod.object({
   id: zod.number(),
@@ -33,6 +36,7 @@ export const ListBlogsResponseItem = zod.object({
   excerpt: zod.string().nullish(),
   coverImage: zod.string().nullish(),
   published: zod.boolean(),
+  category: zod.string().default(listBlogsResponseCategoryDefault),
   createdAt: zod.coerce.date(),
   updatedAt: zod.coerce.date(),
 });
@@ -43,6 +47,7 @@ export const ListBlogsResponse = zod.array(ListBlogsResponseItem);
  */
 
 export const createBlogBodyPublishedDefault = false;
+export const createBlogBodyCategoryDefault = `blog`;
 
 export const CreateBlogBody = zod.object({
   title: zod.string().min(1),
@@ -50,11 +55,14 @@ export const CreateBlogBody = zod.object({
   excerpt: zod.string().optional(),
   coverImage: zod.string().optional(),
   published: zod.boolean().default(createBlogBodyPublishedDefault),
+  category: zod.string().default(createBlogBodyCategoryDefault),
 });
 
 /**
  * @summary List recent published blog posts
  */
+export const listRecentBlogsResponseCategoryDefault = `blog`;
+
 export const ListRecentBlogsResponseItem = zod.object({
   id: zod.number(),
   title: zod.string(),
@@ -62,6 +70,7 @@ export const ListRecentBlogsResponseItem = zod.object({
   excerpt: zod.string().nullish(),
   coverImage: zod.string().nullish(),
   published: zod.boolean(),
+  category: zod.string().default(listRecentBlogsResponseCategoryDefault),
   createdAt: zod.coerce.date(),
   updatedAt: zod.coerce.date(),
 });
@@ -74,6 +83,8 @@ export const GetBlogParams = zod.object({
   id: zod.coerce.number(),
 });
 
+export const getBlogResponseCategoryDefault = `blog`;
+
 export const GetBlogResponse = zod.object({
   id: zod.number(),
   title: zod.string(),
@@ -81,6 +92,7 @@ export const GetBlogResponse = zod.object({
   excerpt: zod.string().nullish(),
   coverImage: zod.string().nullish(),
   published: zod.boolean(),
+  category: zod.string().default(getBlogResponseCategoryDefault),
   createdAt: zod.coerce.date(),
   updatedAt: zod.coerce.date(),
 });
@@ -98,7 +110,10 @@ export const UpdateBlogBody = zod.object({
   excerpt: zod.string().optional(),
   coverImage: zod.string().optional(),
   published: zod.boolean().optional(),
+  category: zod.string().optional(),
 });
+
+export const updateBlogResponseCategoryDefault = `blog`;
 
 export const UpdateBlogResponse = zod.object({
   id: zod.number(),
@@ -107,6 +122,7 @@ export const UpdateBlogResponse = zod.object({
   excerpt: zod.string().nullish(),
   coverImage: zod.string().nullish(),
   published: zod.boolean(),
+  category: zod.string().default(updateBlogResponseCategoryDefault),
   createdAt: zod.coerce.date(),
   updatedAt: zod.coerce.date(),
 });
