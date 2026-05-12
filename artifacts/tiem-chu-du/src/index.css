@@ -51,48 +51,53 @@
 }
 
 :root {
-  /* Dark teal background, ivory text, gold accents */
-  --background: 186 60% 12%; 
-  --foreground: 40 40% 92%; 
+  /* Deep navy background — inspired by banner's dark space tone */
+  --background: 224 60% 7%;
+  --foreground: 0 0% 96%;
 
-  --border: 186 30% 25%;
-  --input: 186 30% 20%;
-  --ring: 43 60% 65%; /* Gold ring */
+  --border: 224 35% 18%;
+  --input: 224 40% 13%;
+  --ring: 340 70% 68%;
 
-  --card: 186 50% 15%;
-  --card-foreground: 40 40% 92%;
-  --card-border: 186 30% 25%;
+  /* Cards are slightly lifted navy */
+  --card: 224 50% 10%;
+  --card-foreground: 0 0% 96%;
+  --card-border: 224 35% 18%;
 
-  --popover: 186 60% 10%;
-  --popover-foreground: 40 40% 92%;
-  --popover-border: 186 30% 25%;
+  --popover: 224 60% 6%;
+  --popover-foreground: 0 0% 96%;
+  --popover-border: 224 35% 18%;
 
-  --primary: 43 60% 65%; /* Subtle Gold */
-  --primary-foreground: 186 60% 10%;
-  
-  --secondary: 186 40% 20%;
-  --secondary-foreground: 40 40% 92%;
-  
-  --muted: 186 40% 18%;
-  --muted-foreground: 40 20% 75%;
-  
-  --accent: 186 30% 22%;
-  --accent-foreground: 43 60% 65%;
-  
-  --destructive: 0 60% 45%;
-  --destructive-foreground: 40 40% 92%;
+  /* Primary: soft rose-pink (hồng) */
+  --primary: 340 70% 68%;
+  --primary-foreground: 224 60% 7%;
 
-  --app-font-sans: 'Lora', serif; /* Use Lora for body */
-  --app-font-serif: 'Cormorant Garamond', serif; /* Use Cormorant Garamond for headings */
+  /* Secondary: warm coral-orange (cam) */
+  --secondary: 18 82% 58%;
+  --secondary-foreground: 0 0% 97%;
+
+  /* Muted: navy-blue mid tone */
+  --muted: 224 45% 13%;
+  --muted-foreground: 224 20% 62%;
+
+  /* Accent: slightly lighter navy with pink tint */
+  --accent: 240 35% 16%;
+  --accent-foreground: 340 70% 72%;
+
+  --destructive: 0 65% 50%;
+  --destructive-foreground: 0 0% 97%;
+
+  --app-font-sans: 'Lora', serif;
+  --app-font-serif: 'Cormorant Garamond', serif;
   --app-font-mono: Menlo, monospace;
-  
-  --radius: 0.25rem; 
 
-  --button-outline: rgba(248, 245, 240, 0.15);
-  --badge-outline: rgba(248, 245, 240, 0.1);
+  --radius: 0.25rem;
+
+  --button-outline: rgba(255, 255, 255, 0.12);
+  --badge-outline: rgba(255, 255, 255, 0.08);
   --opaque-button-border-intensity: 10;
-  --elevate-1: rgba(248, 245, 240, 0.04);
-  --elevate-2: rgba(248, 245, 240, 0.08);
+  --elevate-1: rgba(255, 255, 255, 0.04);
+  --elevate-2: rgba(255, 255, 255, 0.08);
 
   --sidebar-primary-border: hsl(var(--primary));
   --sidebar-accent-border: hsl(var(--accent));
@@ -104,36 +109,35 @@
 }
 
 .dark {
-  /* Same theme for dark mode as it's naturally dark */
-  --background: 186 60% 12%; 
-  --foreground: 40 40% 92%; 
+  --background: 224 60% 7%;
+  --foreground: 0 0% 96%;
 
-  --border: 186 30% 25%;
-  --input: 186 30% 20%;
-  --ring: 43 60% 65%; /* Gold ring */
+  --border: 224 35% 18%;
+  --input: 224 40% 13%;
+  --ring: 340 70% 68%;
 
-  --card: 186 50% 15%;
-  --card-foreground: 40 40% 92%;
-  --card-border: 186 30% 25%;
+  --card: 224 50% 10%;
+  --card-foreground: 0 0% 96%;
+  --card-border: 224 35% 18%;
 
-  --popover: 186 60% 10%;
-  --popover-foreground: 40 40% 92%;
-  --popover-border: 186 30% 25%;
+  --popover: 224 60% 6%;
+  --popover-foreground: 0 0% 96%;
+  --popover-border: 224 35% 18%;
 
-  --primary: 43 60% 65%; /* Subtle Gold */
-  --primary-foreground: 186 60% 10%;
-  
-  --secondary: 186 40% 20%;
-  --secondary-foreground: 40 40% 92%;
-  
-  --muted: 186 40% 18%;
-  --muted-foreground: 40 20% 75%;
-  
-  --accent: 186 30% 22%;
-  --accent-foreground: 43 60% 65%;
-  
-  --destructive: 0 60% 45%;
-  --destructive-foreground: 40 40% 92%;
+  --primary: 340 70% 68%;
+  --primary-foreground: 224 60% 7%;
+
+  --secondary: 18 82% 58%;
+  --secondary-foreground: 0 0% 97%;
+
+  --muted: 224 45% 13%;
+  --muted-foreground: 224 20% 62%;
+
+  --accent: 240 35% 16%;
+  --accent-foreground: 340 70% 72%;
+
+  --destructive: 0 65% 50%;
+  --destructive-foreground: 0 0% 97%;
 }
 
 @layer base {
@@ -142,12 +146,28 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground selection:bg-primary/30 selection:text-primary-foreground;
+    @apply font-sans antialiased bg-background text-foreground selection:bg-primary/25 selection:text-white;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif tracking-tight text-primary;
+    @apply font-serif tracking-tight;
   }
+}
+
+/* Wave background texture — echoes the banner's organic wave motif */
+.wave-bg {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 80%, hsl(240 60% 14% / 0.6) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 20%, hsl(340 50% 18% / 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 50% 50%, hsl(224 60% 9% / 0.9) 0%, transparent 70%);
+}
+
+/* Subtle animated wave overlay */
+.wave-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1440' height='120' viewBox='0 0 1440 120'%3E%3Cpath fill='%23ffffff' fill-opacity='0.018' d='M0,60 C240,100 480,20 720,60 C960,100 1200,20 1440,60 L1440,120 L0,120 Z'/%3E%3Cpath fill='%23ffffff' fill-opacity='0.012' d='M0,80 C360,20 720,100 1080,40 C1260,10 1380,60 1440,80 L1440,120 L0,120 Z'/%3E%3C/svg%3E");
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: bottom;
 }
 
 .prose {
