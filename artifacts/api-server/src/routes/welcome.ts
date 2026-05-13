@@ -19,10 +19,19 @@ router.patch("/welcome", async (req, res) => {
   if (!body.success) {
     return res.status(400).json({ error: "Invalid body" });
   }
+
   const [existing] = await db.select().from(welcomePageTable).limit(1);
+
+  // Upsert: create a default row if none exists yet
   if (!existing) {
-    return res.status(404).json({ error: "Welcome page not found" });
+    const [created] = await db.insert(welcomePageTable).values({
+      headline: body.data.headline ?? "Tiệm Chu Du",
+      subheadline: body.data.subheadline ?? "Nơi lưu giữ những câu chuyện",
+      body: body.data.body ?? "",
+    }).returning();
+    return res.json(created);
   }
+
   const updateData: Record<string, unknown> = { updatedAt: new Date() };
   if (body.data.headline !== undefined) updateData.headline = body.data.headline;
   if (body.data.subheadline !== undefined) updateData.subheadline = body.data.subheadline;

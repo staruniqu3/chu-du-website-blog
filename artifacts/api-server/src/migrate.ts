@@ -68,6 +68,14 @@ export async function ensureSchema() {
         "updated_at" timestamp NOT NULL DEFAULT now()
       );
     `);
+
+    // Seed welcome_page with one default row if empty
+    await client.query(`
+      INSERT INTO "welcome_page" ("headline", "subheadline", "body")
+      SELECT 'Tiệm Chu Du', 'Nơi lưu giữ những câu chuyện', ''
+      WHERE NOT EXISTS (SELECT 1 FROM "welcome_page" LIMIT 1);
+    `);
+
     logger.info("Database schema verified");
   } finally {
     client.release();
